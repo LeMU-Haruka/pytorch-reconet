@@ -2,10 +2,11 @@ import os
 import argparse
 
 import numpy as np
+from PIL import Image
 
 from lib import ReCoNetModel
 from ffmpeg_tools import VideoReader, VideoWriter
-
+import torchvision.transforms as transforms
 
 def create_folder_for_file(path):
     folder = os.path.dirname(path)
@@ -35,12 +36,13 @@ if __name__ == "__main__":
     create_folder_for_file(args.output)
     writer = VideoWriter(args.output, reader.width, reader.height, reader.fps)
 
+
     with writer:
         batch = []
 
         for frame in reader:
-            batch.append(frame)
-
+            batch.append(transforms.ToTensor()(frame).numpy())
+            # image.save('input{}.png'.format(count))
             if len(batch) == batch_size:
                 batch = np.array(batch)
                 for styled_frame in model.run(batch):

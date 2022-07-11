@@ -1,0 +1,8 @@
+operator_name, count, status
+onnx::Pad, 14, Supported
+onnx::Conv, 14, Supported
+onnx::InstanceNormalization, 13, Unsupported
+onnx::Relu, 13, Supported
+onnx::Add, 4, Supported
+onnx::Resize, 2, Supported
+onnx::Tanh, 1, Supported

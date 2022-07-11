@@ -67,7 +67,9 @@ class RandomHorizontalFlip:
         return optical_flow
 
     def __call__(self, sample):
-        if random.random() < self.p:
+        p = random.random()
+        print(p)
+        if p < self.p:
             return {
                 "frame": self.flip_image(sample["frame"]),
                 "previous_frame": self.flip_image(sample["previous_frame"]),

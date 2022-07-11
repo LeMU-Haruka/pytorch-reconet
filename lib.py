@@ -1,5 +1,7 @@
 import os, sys
 
+from PIL import Image
+
 current_dir = os.path.dirname(__file__)
 sys.path.insert(0, current_dir)
 
@@ -22,19 +24,9 @@ class ReCoNetModel:
             self.model = ReCoNet(frn=frn)
             self.model.load_state_dict(torch.load(state_dict_path))
             self.model = self.to_device(self.model)
-            self.model.eval()
 
     def run(self, images):
-        assert images.dtype == np.uint8
-        assert 3 <= images.ndim <= 4
-
-        orig_ndim = images.ndim
-        if images.ndim == 3:
-            images = images[None, ...]
-
-        images = torch.from_numpy(images)
-        images = nhwc_to_nchw(images)
-        images = images.to(torch.float32) / 255
+        images = torch.from_numpy(images).cuda()
 
         with self.device():
             with torch.no_grad():
@@ -42,13 +34,20 @@ class ReCoNetModel:
                 images = preprocess_for_reconet(images)
                 styled_images = self.model(images)
                 styled_images = postprocess_reconet(styled_images)
-                styled_images = styled_images.cpu()
-                styled_images = torch.clamp(styled_images * 255, 0, 255).to(torch.uint8)
-                styled_images = nchw_to_nhwc(styled_images)
-                styled_images = styled_images.numpy()
-                if orig_ndim == 3:
-                    styled_images = styled_images[0]
-                return styled_images
+                styled_images = styled_images.data.cpu().numpy()
+                result = []
+                for output in styled_images:
+                    input_format = 'CHW'
+                    index = [input_format.find(c) for c in 'HWC']
+                    tensor = output.transpose(index)
+
+                    scale_factor = 255
+                    tensor = tensor.astype(np.float32)
+                    tensor = (tensor * scale_factor).astype(np.uint8)
+                    result.append(tensor)
+                    image = Image.fromarray(tensor)
+                    image.save('test.png')
+                return result
 
     def to_device(self, x):
         if self.use_gpu:

@@ -30,7 +30,6 @@ class SceneFlowDataset(Dataset):
             "motion_boundaries": Image.open(entry.motion_boundaries),
             "index": index
         }
-
         sample = self.transform(sample)
         return sample
 

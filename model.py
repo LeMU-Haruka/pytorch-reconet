@@ -12,7 +12,9 @@ class ConvLayer(nn.Module):
         )
 
     def forward(self, x):
-        return self.layers(x)
+        for layer in self.layers:
+            x = layer(x)
+        return x
 
 
 class ConvNormLayer(nn.Module):
@@ -29,7 +31,7 @@ class ConvNormLayer(nn.Module):
         else:
             layers = [
                 ConvLayer(in_channels, out_channels, kernel_size, stride),
-                nn.InstanceNorm2d(out_channels, affine=True),
+                nn.InstanceNorm2d(out_channels, affine=True, track_running_stats=True),
             ]
             if activation:
                 layers.append(nn.ReLU(inplace=True))
@@ -101,7 +103,11 @@ class Decoder(nn.Module):
         )
 
     def forward(self, x):
-        return self.layers(x)
+        temp = x.clone().detach().cpu().numpy()
+        for layer in self.layers:
+            x = layer(x)
+            temp = x.clone().detach().cpu().numpy()
+        return x
 
 
 class ReCoNet(nn.Module):

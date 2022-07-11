@@ -2,6 +2,8 @@ import argparse
 import os
 from datetime import datetime
 
+import numpy as np
+import random
 import torch
 import torch.utils.data
 import torchvision
@@ -26,6 +28,12 @@ from utils import \
     postprocess_reconet, \
     RunningLossesContainer, \
     Dummy
+seed = 20
+torch.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+np.random.seed(seed)
+random.seed(seed)
+torch.backends.cudnn.deterministic = True
 
 
 def output_temporal_loss(
@@ -91,6 +99,17 @@ def stylize_image(image, model):
     styled_image = postprocess_reconet(styled_image)
     return styled_image
 
+def stylize_batch(batch, model):
+    input = []
+    for image in batch:
+        input.append(transforms.ToTensor()(image).numpy())
+    batch = torch.from_numpy(np.array(input)).cuda()
+    image = preprocess_for_reconet(batch)
+    styled_image = model(image)
+    styled_image = postprocess_reconet(styled_image)
+    return styled_image
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -102,7 +121,7 @@ if __name__ == "__main__":
     parser.add_argument("--gamma", type=float, default=1e-5, help="Weight of style loss")
     parser.add_argument("--lambda-f", type=float, default=1e5, help="Weight of feature temporal loss")
     parser.add_argument("--lambda-o", type=float, default=2e5, help="Weight of output temporal loss")
-    parser.add_argument("--epochs", type=int, default=2, help="Number of epochs")
+    parser.add_argument("--epochs", type=int, default=5, help="Number of epochs")
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate")
     parser.add_argument("--output-file", default="./model.pth", help="Output model file path")
     parser.add_argument("--frn", action='store_true', help="Use Filter Response Normalization and TLU")
@@ -120,7 +139,7 @@ if __name__ == "__main__":
         ])
         monkaa = MonkaaDataset(os.path.join(args.data_dir, "monkaa"), transform)
         flyingthings3d = FlyingThings3DDataset(os.path.join(args.data_dir, "flyingthings3d"), transform)
-        dataset = monkaa + flyingthings3d
+        dataset = monkaa
         batch_size = 2
         traindata = torch.utils.data.DataLoader(dataset,
                                                 batch_size=batch_size,
@@ -129,7 +148,11 @@ if __name__ == "__main__":
                                                 pin_memory=True,
                                                 drop_last=True)
 
+        data_size = len(traindata)
+        print('total steps is {}'.format(data_size))
         model = ReCoNet(frn=args.frn).cuda()
+        model.load_state_dict(torch.load(args.output_file), strict=False)
+        p = model.state_dict()
         vgg = Vgg16().cuda()
 
         with torch.no_grad():
@@ -156,7 +179,7 @@ if __name__ == "__main__":
                     sample["motion_boundaries"])
 
                 # Compute ReCoNet features and output
-
+                # torch.save(model.state_dict(), args.output_file)
                 reconet_input = preprocess_for_reconet(sample["frame"])
                 feature_maps = model.encoder(reconet_input)
                 output_frame = model.decoder(feature_maps)
@@ -206,7 +229,10 @@ if __name__ == "__main__":
                                                                             sample["reverse_optical_flow"],
                                                                             occlusion_mask)
                 }
-
+                content_loss = tensors_sum([
+                        alpha * content_loss(output_vgg_features[2], input_vgg_features[2]),
+                        alpha * content_loss(previous_output_vgg_features[2], previous_input_vgg_features[2])])
+                loss_log = 'loss detail {}'.format(losses)
                 training_loss = tensors_sum(list(losses.values()))
                 losses["training loss"] = training_loss
 
@@ -218,9 +244,11 @@ if __name__ == "__main__":
 
                     last_iteration = global_step == len(dataset) // batch_size * n_epochs - 1
                     if global_step % 25 == 0 or last_iteration:
+                        torch.save(model.state_dict(), args.output_file)
                         average_losses = running_losses.get()
                         for key, value in average_losses.items():
                             writer.add_scalar(key, value, global_step)
+                        print(loss_log)
 
                         running_losses.reset()
 
@@ -237,5 +265,11 @@ if __name__ == "__main__":
 
                     global_step += 1
 
-        torch.save(model.state_dict(), args.output_file)
+        with torch.no_grad():
+            style_n = Image.open(args.style)
+            style_n = transforms.ToTensor()(style_n).cuda()
+            style_n = style_n.unsqueeze_(0)
+            style_vgg_features_n = vgg(preprocess_for_vgg(style_n))
+            style_gram_matrices_n = [gram_matrix(x) for x in style_vgg_features_n]
+        # torch.save(model.state_dict(), args.output_file)
         writer.close()

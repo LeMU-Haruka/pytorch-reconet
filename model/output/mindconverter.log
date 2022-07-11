@@ -1,0 +1,60 @@
+[WARNING] MI(18020:6068,MainProcess):2022-05-23-15:49:47.117.032 [MINDCONVERTER] Protobuf is currently implemented in "Python". The conversion process may take a long time. Please use `export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp` to enable cpp backend.
+[ERROR] MI(18020:6068,MainProcess):2022-05-23-15:49:47.152.798 [MINDCONVERTER] [RuntimeIntegrityError] code: 1000003, msg: mindspore(>=1.2.0), onnx(>=1.8.0), onnxruntime(>=1.5.2) and onnxoptimizer(>=0.1.2) are required when using graph based scripts converter or ONNX conversion.
+[WARNING] MI(18652:25744,MainProcess):2022-05-23-15:56:12.982.626 [MINDCONVERTER] Protobuf is currently implemented in "Python". The conversion process may take a long time. Please use `export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp` to enable cpp backend.
+[ERROR] MI(18652:25744,MainProcess):2022-05-23-15:56:13.058.206 [MINDCONVERTER] [RuntimeIntegrityError] code: 1000003, msg: mindspore(>=1.2.0), onnx(>=1.8.0), onnxruntime(>=1.5.2) and onnxoptimizer(>=0.1.2) are required when using graph based scripts converter or ONNX conversion.
+[WARNING] MI(20756:8036,MainProcess):2022-05-23-15:56:46.815.731 [MINDCONVERTER] Protobuf is currently implemented in "Python". The conversion process may take a long time. Please use `export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp` to enable cpp backend.
+[INFO] MI(20756:8036,MainProcess):2022-05-23-15:56:48.018.927 [MINDCONVERTER] Onnx model loading begins.
+[INFO] MI(20756:8036,MainProcess):2022-05-23-15:56:48.036.855 [MINDCONVERTER] Onnx model loading is finished.
+[INFO] MI(20756:8036,MainProcess):2022-05-23-15:56:48.036.855 [MINDCONVERTER] Onnx simplifying begins.
+[INFO] MI(20756:8036,MainProcess):2022-05-23-15:56:50.209.051 [MINDCONVERTER] Onnx simplifying is finished.
+[ERROR] MI(20756:8036,MainProcess):2022-05-23-15:56:50.361.642 [MINDCONVERTER] [NodeTypeNotSupport] code: 50547002, msg: Found unsupported operator, please check the detail report at: D:\Onedrive\Code\Python\pytorch-reconet\model\output\operator_scanning_report.csv
+[ERROR] MI(20756:8036,MainProcess):2022-05-23-15:56:50.361.642 [MINDCONVERTER] [BaseConverterError] code: 0000000, msg: [NodeTypeNotSupport] code: 50547002, msg: Found unsupported operator, please check the detail report at: D:\Onedrive\Code\Python\pytorch-reconet\model\output\operator_scanning_report.csv
+[ERROR] MI(20756:8036,MainProcess):2022-05-23-15:56:50.361.642 [MINDCONVERTER] [BaseConverterError] code: 0000000, msg: Failed to start base converter.
+[ERROR] MI(20756:8036,MainProcess):2022-05-23-15:56:50.361.642 [MINDCONVERTER] [NodeTypeNotSupport] code: 50547002, msg: Found unsupported operator, please check the detail report at: D:\Onedrive\Code\Python\pytorch-reconet\model\output\operator_scanning_report.csv
+Traceback (most recent call last):
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\common\exceptions.py", line 196, in _f
+    res = func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\graph_based_converter\framework.py", line 151, in main_graph_base_converter
+    graph_based_converter_onnx_to_ms(graph_path=graph_path,
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\graph_based_converter\common\utils.py", line 579, in _f
+    func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\common\exceptions.py", line 196, in _f
+    res = func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\common\exceptions.py", line 196, in _f
+    res = func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\common\exceptions.py", line 196, in _f
+    res = func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\graph_based_converter\framework.py", line 59, in graph_based_converter_onnx_to_ms
+    generate_operator_scanning_report(graph_obj, get_table("onnx"), "onnx", report_folder)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\graph_based_converter\common\utils.py", line 546, in generate_operator_scanning_report
+    raise error
+mindconverter.common.exceptions.NodeTypeNotSupport: [NodeTypeNotSupport] code: 50547002, msg: Found unsupported operator, please check the detail report at: D:\Onedrive\Code\Python\pytorch-reconet\model\output\operator_scanning_report.csv
+[WARNING] MI(20756:8036,MainProcess):2022-05-23-15:56:50.492.605 [MINDCONVERTER] For command line, libraries mindspore(>=1.2.0), onnx(>=1.8.0), onnxruntime(>=1.5.2) and onnxoptimizer(>=0.1.2) are required by converter, tensorflow(>=1.15.0) and tf2onnx(>=1.7.1) are required when converted from TF(.pb). For API, libraries mindspore(>=1.2.0) and torch(==1.8.2) are required. Current versions are: mindspore(==1.7.0), onnx(==1.11.0), onnxruntime(==1.11.1), onnxoptimizer(==0.2.7), tensorflow(==NotFound), tf2onnx(==NotFound), mindspore(==1.7.0) and torch(==1.11.0+cpu).
+[WARNING] MI(5900:16932,MainProcess):2022-05-23-16:09:29.019.194 [MINDCONVERTER] Protobuf is currently implemented in "Python". The conversion process may take a long time. Please use `export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp` to enable cpp backend.
+[INFO] MI(5900:16932,MainProcess):2022-05-23-16:09:29.979.095 [MINDCONVERTER] Onnx model loading begins.
+[INFO] MI(5900:16932,MainProcess):2022-05-23-16:09:29.997.047 [MINDCONVERTER] Onnx model loading is finished.
+[INFO] MI(5900:16932,MainProcess):2022-05-23-16:09:29.999.042 [MINDCONVERTER] Onnx simplifying begins.
+[INFO] MI(5900:16932,MainProcess):2022-05-23-16:09:32.013.661 [MINDCONVERTER] Onnx simplifying is finished.
+[ERROR] MI(5900:16932,MainProcess):2022-05-23-16:09:32.162.261 [MINDCONVERTER] [NodeTypeNotSupport] code: 50547002, msg: Found unsupported operator, please check the detail report at: D:\Onedrive\Code\Python\pytorch-reconet\model\output\operator_scanning_report.csv
+[ERROR] MI(5900:16932,MainProcess):2022-05-23-16:09:32.163.259 [MINDCONVERTER] [BaseConverterError] code: 0000000, msg: [NodeTypeNotSupport] code: 50547002, msg: Found unsupported operator, please check the detail report at: D:\Onedrive\Code\Python\pytorch-reconet\model\output\operator_scanning_report.csv
+[ERROR] MI(5900:16932,MainProcess):2022-05-23-16:09:32.163.259 [MINDCONVERTER] [BaseConverterError] code: 0000000, msg: Failed to start base converter.
+[ERROR] MI(5900:16932,MainProcess):2022-05-23-16:09:32.163.259 [MINDCONVERTER] [NodeTypeNotSupport] code: 50547002, msg: Found unsupported operator, please check the detail report at: D:\Onedrive\Code\Python\pytorch-reconet\model\output\operator_scanning_report.csv
+Traceback (most recent call last):
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\common\exceptions.py", line 196, in _f
+    res = func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\graph_based_converter\framework.py", line 151, in main_graph_base_converter
+    graph_based_converter_onnx_to_ms(graph_path=graph_path,
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\graph_based_converter\common\utils.py", line 579, in _f
+    func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\common\exceptions.py", line 196, in _f
+    res = func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\common\exceptions.py", line 196, in _f
+    res = func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\common\exceptions.py", line 196, in _f
+    res = func(*args, **kwargs)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\graph_based_converter\framework.py", line 59, in graph_based_converter_onnx_to_ms
+    generate_operator_scanning_report(graph_obj, get_table("onnx"), "onnx", report_folder)
+  File "D:\Anaconda3\envs\mindspore\lib\site-packages\mindconverter\graph_based_converter\common\utils.py", line 546, in generate_operator_scanning_report
+    raise error
+mindconverter.common.exceptions.NodeTypeNotSupport: [NodeTypeNotSupport] code: 50547002, msg: Found unsupported operator, please check the detail report at: D:\Onedrive\Code\Python\pytorch-reconet\model\output\operator_scanning_report.csv
+[WARNING] MI(5900:16932,MainProcess):2022-05-23-16:09:32.296.544 [MINDCONVERTER] For command line, libraries mindspore(>=1.2.0), onnx(>=1.8.0), onnxruntime(>=1.5.2) and onnxoptimizer(>=0.1.2) are required by converter, tensorflow(>=1.15.0) and tf2onnx(>=1.7.1) are required when converted from TF(.pb). For API, libraries mindspore(>=1.2.0) and torch(==1.8.2) are required. Current versions are: mindspore(==1.7.0), onnx(==1.11.0), onnxruntime(==1.11.1), onnxoptimizer(==0.2.7), tensorflow(==NotFound), tf2onnx(==NotFound), mindspore(==1.7.0) and torch(==1.11.0+cpu).
